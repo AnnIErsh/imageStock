@@ -30,9 +30,10 @@
 }
 - (id)init {
     if (self = [super init]) {
-        self.userId = [[NSString alloc] initWithString:@""];
-        self.token = 0;
+        self.token = [[NSString alloc] initWithString:@""];
     }
     return self;
 }
+
+
 @end
