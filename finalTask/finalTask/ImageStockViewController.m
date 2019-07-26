@@ -25,34 +25,38 @@
     [self.imageStockView registerClass:[ImageStockCell class] forCellWithReuseIdentifier:@"CellStock"];
     [self.imageStockView setBackgroundColor:[UIColor grayColor]];
     [self.view addSubview:self.imageStockView];
-  
+    self.infNumber = (arc4random() % 100) + 1;
 }
+
+
 
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return 5;
+    return self.infNumber;
 }
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake(200,200);
+    return CGSizeMake(300,300);
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     ImageStockCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CellStock" forIndexPath:indexPath];
-    int i = (arc4random() % 1000) + 1;
-    NSString *sValue = [@(i) stringValue];
+    cell.backgroundView = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"placeholder"]];
+    NSString *sValue = [@(self.infNumber) stringValue];
     [self fetchRequest:cell forOndexPath:indexPath withPage:sValue];
+    //NSLog(self.imageDate.count);
     return cell;
 }
 
 
 - (void)fetchRequest: (ImageStockCell *)cell forOndexPath: (NSIndexPath*)path withPage:(NSString*)page{
-    NSString *client_id = @"b3b44601b00c840945f3c415f24e043ee5149121d2de04e4b47cb290b3401b2c";
+    NSString *client_id = @"b132b205e5222fb070766e967d5ce4a97019704f212a35b7db5c249131967858";
     //@"b3b44601b00c840945f3c415f24e043ee5149121d2de04e4b47cb290b3401b2c";
     //b132b205e5222fb070766e967d5ce4a97019704f212a35b7db5c249131967858
+
     NSURLComponents *componets = [NSURLComponents new];
     componets.scheme = @"https";
     componets.host = @"api.unsplash.com";
@@ -60,9 +64,10 @@
     componets.queryItems = @[
                              [NSURLQueryItem queryItemWithName:@"client_id" value: client_id],
                              [NSURLQueryItem queryItemWithName:@"page" value: page],
-                             [NSURLQueryItem queryItemWithName:@"per_page" value: @"5"]
+                             [NSURLQueryItem queryItemWithName:@"per_page" value: page]
                              //[NSURLQueryItem queryItemWithName:@"count" value: @"5"]
                              ];
+   // self.infNumber = self.infNumber + 1;
     NSURL *url = componets.URL;
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL: url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
     NSURLSession *session = [NSURLSession sharedSession];
@@ -76,14 +81,13 @@
         
         if (data != nil)
         {
-
-            
             NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
             self.imageDate = [dict valueForKey:@"urls"];
             NSLog(@"%lu", (unsigned long)dict.count);
            
             NSArray *arr = [self.imageDate valueForKey:@"full"];
             NSString *str = [arr objectAtIndex:path.item];
+            self.infNumber = self.infNumber + 1;
 
             dispatch_async(dispatch_get_global_queue(0,0), ^{
                 NSData *dat = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: str]];
@@ -100,6 +104,11 @@
     [task resume];
     [componets autorelease];
     
+}
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    NSLog(@"ended");
+    [self.imageStockView reloadData];
+    self.infNumber = self.infNumber + 1;
 }
 
 

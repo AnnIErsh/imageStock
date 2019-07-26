@@ -12,6 +12,8 @@
 
 @interface ImageStockViewController : UIViewController
 @property (retain) UICollectionView *imageStockView;
+@property (assign) int infNumber;
+@property (assign) int moreNumber;
 @property (retain, nonatomic) __block NSDictionary *imageDate;
 @end
 
