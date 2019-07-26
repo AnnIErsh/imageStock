@@ -10,6 +10,7 @@
 
 @interface ViewController : UIViewController
 
-
+@property (retain, nonatomic) __block NSDictionary *imageDate;
+@property (retain, nonatomic) UIImageView *image;
 @end
 

@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "ViewController.h"
+#import "ImageStockViewController.h"
 
 @interface AppDelegate ()
 
@@ -17,9 +18,11 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    ViewController *vc = [ViewController new];
-    [self.window setRootViewController:vc];
-    [vc autorelease];
+    ImageStockViewController *vc = [[ImageStockViewController new] autorelease];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [self.window makeKeyAndVisible];
+    self.window.rootViewController = vc;
+    self.window.backgroundColor = [UIColor whiteColor];
     return YES;
 }
 
