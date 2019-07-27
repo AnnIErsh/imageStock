@@ -11,6 +11,9 @@
 		0B6A698A22EA4F1A00C96040 /* ImageStockCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B6A698922EA4F1A00C96040 /* ImageStockCell.m */; };
 		0B6A698B22EA4F1A00C96040 /* ImageStockCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B6A698922EA4F1A00C96040 /* ImageStockCell.m */; };
 		0B6A698C22EA4F1A00C96040 /* ImageStockCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B6A698922EA4F1A00C96040 /* ImageStockCell.m */; };
+		0BAABC6422EC8AFC00D39D94 /* CachingImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BAABC6322EC8AFC00D39D94 /* CachingImage.m */; };
+		0BAABC6522EC8AFC00D39D94 /* CachingImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BAABC6322EC8AFC00D39D94 /* CachingImage.m */; };
+		0BAABC6622EC8AFC00D39D94 /* CachingImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BAABC6322EC8AFC00D39D94 /* CachingImage.m */; };
 		0BE3A6B722E39ED00041E93A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BE3A6B622E39ED00041E93A /* AppDelegate.m */; };
 		0BE3A6BA22E39ED00041E93A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BE3A6B922E39ED00041E93A /* ViewController.m */; };
 		0BE3A6BD22E39ED00041E93A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BE3A6BB22E39ED00041E93A /* Main.storyboard */; };
@@ -44,6 +47,8 @@
 		0B6A698422EA4B3200C96040 /* ImageStockViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageStockViewController.m; sourceTree = "<group>"; };
 		0B6A698822EA4F1A00C96040 /* ImageStockCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageStockCell.h; sourceTree = "<group>"; };
 		0B6A698922EA4F1A00C96040 /* ImageStockCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageStockCell.m; sourceTree = "<group>"; };
+		0BAABC6222EC8AFC00D39D94 /* CachingImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CachingImage.h; sourceTree = "<group>"; };
+		0BAABC6322EC8AFC00D39D94 /* CachingImage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CachingImage.m; sourceTree = "<group>"; };
 		0BE3A6B222E39ED00041E93A /* finalTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = finalTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BE3A6B522E39ED00041E93A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0BE3A6B622E39ED00041E93A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -111,6 +116,8 @@
 		0BE3A6B422E39ED00041E93A /* finalTask */ = {
 			isa = PBXGroup;
 			children = (
+				0BAABC6222EC8AFC00D39D94 /* CachingImage.h */,
+				0BAABC6322EC8AFC00D39D94 /* CachingImage.m */,
 				0B6A698322EA4B3200C96040 /* ImageStockViewController.h */,
 				0B6A698422EA4B3200C96040 /* ImageStockViewController.m */,
 				0B6A698822EA4F1A00C96040 /* ImageStockCell.h */,
@@ -278,6 +285,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B6A698A22EA4F1A00C96040 /* ImageStockCell.m in Sources */,
+				0BAABC6422EC8AFC00D39D94 /* CachingImage.m in Sources */,
 				0BE3A6C022E39ED00041E93A /* finalTask.xcdatamodeld in Sources */,
 				0BE3A6BA22E39ED00041E93A /* ViewController.m in Sources */,
 				0B6A698522EA4B3200C96040 /* ImageStockViewController.m in Sources */,
@@ -291,6 +299,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B6A698B22EA4F1A00C96040 /* ImageStockCell.m in Sources */,
+				0BAABC6522EC8AFC00D39D94 /* CachingImage.m in Sources */,
 				0BE3A6D222E39ED50041E93A /* finalTaskTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -300,6 +309,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B6A698C22EA4F1A00C96040 /* ImageStockCell.m in Sources */,
+				0BAABC6622EC8AFC00D39D94 /* CachingImage.m in Sources */,
 				0BE3A6DD22E39ED50041E93A /* finalTaskUITests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

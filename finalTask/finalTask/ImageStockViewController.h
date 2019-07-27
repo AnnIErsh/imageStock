@@ -15,6 +15,11 @@
 @property (assign) int infNumber;
 @property (assign) int moreNumber;
 @property (retain, nonatomic) __block NSDictionary *imageDate;
+@property (retain, nonatomic) __block NSMutableDictionary *mutableImageDate;
+@property (retain, nonatomic) __block UIImage *imageToCache;
+@property (retain, nonatomic) __block NSArray *imageH;
+@property (retain, nonatomic) __block NSArray *imageW;
+@property (retain, nonatomic) __block NSMutableArray *imageMutableArray;
 @end
 
 

@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface ViewController : UIViewController
+@class CustomView;
+@interface ViewController : UIViewController <UIScrollViewDelegate>
 
 @property (retain, nonatomic) __block NSDictionary *imageDate;
-@property (retain, nonatomic) UIImageView *image;
+@property (retain, nonatomic) CustomView *image;
+@property (retain, nonatomic) UIScrollView *scrollView;
+
 @end
 

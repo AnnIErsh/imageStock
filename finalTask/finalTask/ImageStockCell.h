@@ -10,7 +10,10 @@
 
 
 @interface ImageStockCell : UICollectionViewCell
-@property (retain) UIImageView *stockImageView;
+@property (retain,nonatomic) UIImageView *stockImageView;
++ (instancetype)sizingCell;
+@property (assign) CGFloat height;
+@property (assign) CGFloat width;
 @end
 
 
