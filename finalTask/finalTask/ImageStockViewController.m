@@ -27,7 +27,7 @@
     [self.imageStockView setBackgroundColor:[UIColor grayColor]];
     [self.view addSubview:self.imageStockView];
     self.infNumber = (arc4random() % 40) + 10;
-   // [self getJson];
+    [self getJson];
     
  
     
@@ -161,7 +161,7 @@
     NSLog(@"ended");
     //self.infNumber = self.infNumber + 1
     [self.imageStockView reloadData];
-     self.infNumber = self.infNumber + 4;
+     self.infNumber = self.infNumber + 6;
 }
 
 -(void)loadImagesInItems:(ImageStockCell*)cell withString:(NSString*)str atIndexPath:(NSIndexPath*)path{
