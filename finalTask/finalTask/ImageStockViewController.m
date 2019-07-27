@@ -8,8 +8,9 @@
 
 #import "ImageStockViewController.h"
 #import "ImageStockCell.h"
+#import "ViewController.h"
 
-@interface ImageStockViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface ImageStockViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,UIGestureRecognizerDelegate>
 
 @end
 
@@ -28,8 +29,6 @@
     [self.view addSubview:self.imageStockView];
     self.infNumber = (arc4random() % 40) + 10;
     [self getJson];
-    
- 
     
 }
 
@@ -53,22 +52,6 @@
 }
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    //ImageStockCell *cell = (ImageStockCell*)
-//    UICollectionViewCell *sizingCell = [ImageStockCell sizingCell];
-//    [sizingCell prepareForReuse];
-//    [self configureCell:sizingCell atIndexPath:indexPath];
-//    [sizingCell setNeedsLayout];
-//    [sizingCell layoutIfNeeded];
-//    
-//    CGSize size = [sizingCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
- //   ImageStockCell *cell = (ImageStockCell *)[self.imageStockView cellForItemAtIndexPath:indexPath];
-    
-    //CGSize size = cell.stockImageView.frame.size;
-//     dispatch_async(dispatch_get_main_queue(), ^{
-//         NSLog(@"size %f: ", cell.width);});
-    
-    //CGSizeMake(cell.width, cell.height);
-    //cell.stockImageView.frame.size;
     
     return CGSizeMake(200, 200);
 }
@@ -90,6 +73,9 @@
 //    NSArray *arr = [self.imageDate valueForKey:@"small"];
 //    NSString *str = [arr objectAtIndex:indexPath.item];
     [self fetchRequest:cell forOndexPath:indexPath withPage:sValue];
+    
+
+ //   [cell.stockImageView setNeedsLayout];
    // [self loadImagesInItems:cell withString:str atIndexPath:indexPath];
    // NSLog(@"%lu", (unsigned long)self.imageDate.count);
     return cell;
@@ -170,23 +156,28 @@
         NSString *strH = [self.imageH objectAtIndex:path.item];
         NSString *strW = [self.imageW objectAtIndex:path.item];
         if (!dat){
-            
             NSLog(@"Loading...");
             return;
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             if (cell.tag == path.item){
-            cell.width = [strW intValue];
-            cell.height = [strH intValue];
-            //                CGSize size = cell.stockImageView.frame.size;
-            //               NSLog(@"size %f: ", cell.height / 3);
-            cell.stockImageView.image = [UIImage imageWithData: dat];
-            cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageWithData: dat]];
-            //self.infNumber = self.infNumber + 4;
-            [cell.stockImageView setNeedsLayout];
-            
-            
-             }
+                cell.width = [strW intValue];
+                cell.height = [strH intValue];
+                //                CGSize size = cell.stockImageView.frame.size;
+                //               NSLog(@"size %f: ", cell.height / 3);
+                cell.stockImageView.image = [UIImage imageWithData: dat];
+                UIImageView *opacityView = [[UIImageView alloc] initWithImage:[UIImage imageWithData: dat]];
+                opacityView.layer.opacity = 0.4;
+                cell.backgroundView = opacityView;
+                //self.infNumber = self.infNumber + 4;
+                [cell.stockImageView setUserInteractionEnabled: YES];
+//                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickOnImage: withImage:)];
+//                [tap setDelegate: self];
+//                [cell.stockImageView addGestureRecognizer:tap];
+//                [cell.stockImageView setNeedsLayout];
+                
+                
+            }
         });
         
     });
@@ -238,5 +229,24 @@
     [task resume];
     [componets autorelease];
     
+}
+
+//- (void)clickOnImage:(UITapGestureRecognizer*)recognizer withImage:(UIImage*)image{
+//
+//    ViewController *detailsVC = [ViewController new];
+//    NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:recognizer.view.tag];
+//    ImageStockCell *cell = (ImageStockCell*)[self.imageStockView cellForItemAtIndexPath: indexPath];
+//    image = cell.stockImageView.image;
+//    detailsVC.image = image;
+//   // NSLog(@"%@ image to sent....", detailsVC.detailsImage);
+//    [self.navigationController pushViewController:detailsVC animated:NO];
+//
+//}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    ViewController *detailsVC = [[ViewController new] autorelease];
+    ImageStockCell *cell = (ImageStockCell*)[self.imageStockView cellForItemAtIndexPath: indexPath];
+    detailsVC.image = cell.stockImageView.image;
+    [self.navigationController pushViewController:detailsVC animated:NO];
 }
 @end

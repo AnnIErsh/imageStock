@@ -19,9 +19,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ImageStockViewController *vc = [[ImageStockViewController new] autorelease];
+    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:vc];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window makeKeyAndVisible];
-    self.window.rootViewController = vc;
+    self.window.rootViewController = nc;
     self.window.backgroundColor = [UIColor whiteColor];
     return YES;
 }
