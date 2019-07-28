@@ -11,7 +11,11 @@
 
 
 @interface FilterCollectionViewCell : UICollectionViewCell
-
+@property (retain,nonatomic) UIImageView *filterImageView;
+@property (retain,nonatomic) UIImage *filterImage;
+@property (retain,nonatomic) UILabel *filterLabel;
 @end
+
+
 
 

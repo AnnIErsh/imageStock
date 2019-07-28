@@ -10,6 +10,12 @@
 		0B58CBBE22ED41FA002A0D98 /* FilterCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B58CBBD22ED41FA002A0D98 /* FilterCollectionViewCell.m */; };
 		0B58CBBF22ED41FA002A0D98 /* FilterCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B58CBBD22ED41FA002A0D98 /* FilterCollectionViewCell.m */; };
 		0B58CBC022ED41FA002A0D98 /* FilterCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B58CBBD22ED41FA002A0D98 /* FilterCollectionViewCell.m */; };
+		0B5D8C1522EDC54B0015C79F /* CIImage+Filters.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B5D8C1422EDC54B0015C79F /* CIImage+Filters.m */; };
+		0B5D8C1622EDC54B0015C79F /* CIImage+Filters.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B5D8C1422EDC54B0015C79F /* CIImage+Filters.m */; };
+		0B5D8C1722EDC54B0015C79F /* CIImage+Filters.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B5D8C1422EDC54B0015C79F /* CIImage+Filters.m */; };
+		0B5D8C1A22EDC9BD0015C79F /* UIImage+Filters.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B5D8C1922EDC9BD0015C79F /* UIImage+Filters.m */; };
+		0B5D8C1B22EDC9BD0015C79F /* UIImage+Filters.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B5D8C1922EDC9BD0015C79F /* UIImage+Filters.m */; };
+		0B5D8C1C22EDC9BD0015C79F /* UIImage+Filters.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B5D8C1922EDC9BD0015C79F /* UIImage+Filters.m */; };
 		0B6A698522EA4B3200C96040 /* ImageStockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B6A698422EA4B3200C96040 /* ImageStockViewController.m */; };
 		0B6A698A22EA4F1A00C96040 /* ImageStockCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B6A698922EA4F1A00C96040 /* ImageStockCell.m */; };
 		0B6A698B22EA4F1A00C96040 /* ImageStockCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B6A698922EA4F1A00C96040 /* ImageStockCell.m */; };
@@ -48,6 +54,10 @@
 /* Begin PBXFileReference section */
 		0B58CBBC22ED41FA002A0D98 /* FilterCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FilterCollectionViewCell.h; sourceTree = "<group>"; };
 		0B58CBBD22ED41FA002A0D98 /* FilterCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FilterCollectionViewCell.m; sourceTree = "<group>"; };
+		0B5D8C1322EDC54B0015C79F /* CIImage+Filters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CIImage+Filters.h"; sourceTree = "<group>"; };
+		0B5D8C1422EDC54B0015C79F /* CIImage+Filters.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "CIImage+Filters.m"; sourceTree = "<group>"; };
+		0B5D8C1822EDC9BD0015C79F /* UIImage+Filters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Filters.h"; sourceTree = "<group>"; };
+		0B5D8C1922EDC9BD0015C79F /* UIImage+Filters.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Filters.m"; sourceTree = "<group>"; };
 		0B6A698322EA4B3200C96040 /* ImageStockViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageStockViewController.h; sourceTree = "<group>"; };
 		0B6A698422EA4B3200C96040 /* ImageStockViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageStockViewController.m; sourceTree = "<group>"; };
 		0B6A698822EA4F1A00C96040 /* ImageStockCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageStockCell.h; sourceTree = "<group>"; };
@@ -121,6 +131,10 @@
 		0BE3A6B422E39ED00041E93A /* finalTask */ = {
 			isa = PBXGroup;
 			children = (
+				0B5D8C1322EDC54B0015C79F /* CIImage+Filters.h */,
+				0B5D8C1422EDC54B0015C79F /* CIImage+Filters.m */,
+				0B5D8C1822EDC9BD0015C79F /* UIImage+Filters.h */,
+				0B5D8C1922EDC9BD0015C79F /* UIImage+Filters.m */,
 				0BAABC6222EC8AFC00D39D94 /* CachingImage.h */,
 				0BAABC6322EC8AFC00D39D94 /* CachingImage.m */,
 				0B6A698322EA4B3200C96040 /* ImageStockViewController.h */,
@@ -292,6 +306,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B6A698A22EA4F1A00C96040 /* ImageStockCell.m in Sources */,
+				0B5D8C1A22EDC9BD0015C79F /* UIImage+Filters.m in Sources */,
+				0B5D8C1522EDC54B0015C79F /* CIImage+Filters.m in Sources */,
 				0BAABC6422EC8AFC00D39D94 /* CachingImage.m in Sources */,
 				0B58CBBE22ED41FA002A0D98 /* FilterCollectionViewCell.m in Sources */,
 				0BE3A6C022E39ED00041E93A /* finalTask.xcdatamodeld in Sources */,
@@ -307,8 +323,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B6A698B22EA4F1A00C96040 /* ImageStockCell.m in Sources */,
+				0B5D8C1B22EDC9BD0015C79F /* UIImage+Filters.m in Sources */,
 				0BAABC6522EC8AFC00D39D94 /* CachingImage.m in Sources */,
 				0B58CBBF22ED41FA002A0D98 /* FilterCollectionViewCell.m in Sources */,
+				0B5D8C1622EDC54B0015C79F /* CIImage+Filters.m in Sources */,
 				0BE3A6D222E39ED50041E93A /* finalTaskTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -318,8 +336,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B6A698C22EA4F1A00C96040 /* ImageStockCell.m in Sources */,
+				0B5D8C1C22EDC9BD0015C79F /* UIImage+Filters.m in Sources */,
 				0BAABC6622EC8AFC00D39D94 /* CachingImage.m in Sources */,
 				0B58CBC022ED41FA002A0D98 /* FilterCollectionViewCell.m in Sources */,
+				0B5D8C1722EDC54B0015C79F /* CIImage+Filters.m in Sources */,
 				0BE3A6DD22E39ED50041E93A /* finalTaskUITests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

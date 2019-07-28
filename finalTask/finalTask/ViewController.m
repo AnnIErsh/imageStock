@@ -8,6 +8,8 @@
 
 #import "ViewController.h"
 #import "FilterCollectionViewCell.h"
+#import "UIImage+Filters.h"
+#import "CIImage+Filters.h"
 
 @interface ViewController ()
 @end
@@ -38,6 +40,8 @@
     
     [self setButton];
     [self addSaveButton];
+    [self setFilterView];
+    self.filtersCollection.hidden = YES;
 //    [self setFilterView];
     
 //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesBegan:withEvent:)];
@@ -46,17 +50,22 @@
 
 }
 
-
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return 5;
+    return 8;
 }
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
 }
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     FilterCollectionViewCell *cell = [self.filtersCollection dequeueReusableCellWithReuseIdentifier:@"FilterCell" forIndexPath:indexPath];
-    cell.backgroundColor = UIColor.greenColor;
-   // cell.backgroundView = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"placeholder"]];
+    //cell.backgroundColor = UIColor.greenColor;
+   // cell.filterImage = self.image;
+    //cell.filterImageView.image = self.image;
+    //cell.filterImage = self.image;
+   // [cell.filterImageView setImage:self.image];
+    //cell.filterImageView.layer.borderWidth = 2;
+    //cell.filterImageView.layer.borderWidth = 2;
+    cell.backgroundView = [[UIImageView alloc] initWithImage: self.image];
     return cell;
     
 }
@@ -67,15 +76,22 @@
 
 -(void)viewWillLayoutSubviews{
     [super viewWillLayoutSubviews];
-    [self.view reloadInputViews];
-    self.imageView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
-    self.imageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleLeftMargin;
-    [self.buttonToGallery setFrame:CGRectMake(self.view.frame.size.width/2 - 100, self.view.frame.size.height - 150, 200, 100)];
-    self.buttonToGallery.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin |UIViewAutoresizingFlexibleLeftMargin;
-    
+   // [self.view reloadInputViews];
+    [self reloadInputViews];
+//    [self.view setNeedsDisplay];
+//  //  [self.view setNeedsLayout];
+//    self.imageView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+//    self.imageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleLeftMargin;
+//    [self.buttonToGallery setFrame:CGRectMake(self.view.frame.size.width/2 - 100, self.view.frame.size.height - 150, 200, 100)];
+//    self.buttonToGallery.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin |UIViewAutoresizingFlexibleLeftMargin;
+//    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout new] autorelease];
+ 
    // [self setButton];
     
 }
+//-(void)viewDidLayoutSubviews{
+//    [super viewDidLayoutSubviews];
+//}
 
 CGFloat initialX;
 CGFloat initialY;
@@ -106,6 +122,8 @@ CGFloat initialY;
     }
 
 }
+
+
 
 -(UIImage*)imageWithImage: (UIImage*) sourceImage scaledToWidth: (float) i_width
 {
@@ -141,7 +159,8 @@ CGFloat initialY;
 -(void)setButtonPress:(UIButton*)sender {
    // [self setFilterView];
     if (sender.selected == YES) {
-        [self setFilterView];
+       // [self setFilterView];
+        self.filtersCollection.hidden = NO;
         self.buttonToGallery.hidden = YES;
         sender.selected = NO;
     }else{
@@ -174,6 +193,128 @@ CGFloat initialY;
 }
 - (void)saving:(id)sender {
     UIImageWriteToSavedPhotosAlbum(self.imageView.image, nil, nil, nil);
+}
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    [self imageWithFilter:self.image forIndex:indexPath.item];
+}
+-(void)imageWithFilter: (UIImage*)inputImage forIndex:(long)index {
+    switch (index) {
+        case 0: {
+            CIContext *imageContext = [CIContext contextWithOptions:nil];
+            CIImage *image = [[CIImage alloc] initWithImage:inputImage];
+            CIFilter *filter = [CIFilter filterWithName:@"CISepiaTone"
+                                          keysAndValues: kCIInputImageKey, image,
+                                @"inputIntensity", @1, nil];
+            CIImage *result = [filter valueForKey: @"outputImage"];
+            CGImageRef cgImageRef = [imageContext createCGImage:result fromRect:[result extent]];
+            UIImage *targetImage = [UIImage imageWithCGImage:cgImageRef];
+            [self.imageView setImage:targetImage];
+            break;
+        }
+        case 1:
+        {
+            
+            CIContext *imageContext = [CIContext contextWithOptions:nil];
+            CIImage *image = [[CIImage alloc] initWithImage:inputImage];
+            
+            CIFilter *vignette = [CIFilter filterWithName:@"CIVignette"];
+            [vignette setDefaults];
+            [vignette setValue: image forKey: @"inputImage"];
+            [vignette setValue: [NSNumber numberWithFloat: 1.0] forKey: @"inputIntensity"];
+            [vignette setValue: [NSNumber numberWithFloat: 10.00 ] forKey: @"inputRadius"];
+            CIImage *result = [vignette valueForKey: @"outputImage"];
+            CGImageRef cgImageRef = [imageContext createCGImage:result fromRect:[result extent]];
+            UIImage *targetImage = [UIImage imageWithCGImage:cgImageRef];
+            [self.imageView setImage:targetImage];
+            
+            break;
+            
+        }
+        case 2:
+        {
+            
+            CIContext *imageContext = [CIContext contextWithOptions:nil];
+            CIImage *image = [[CIImage alloc] initWithImage:inputImage];
+            CIFilter *filter= [CIFilter filterWithName:@"CIPhotoEffectTonal"];
+            [filter setValue:image forKey:@"inputImage"];
+            CIImage *result = [filter valueForKey: @"outputImage"];
+            CGImageRef cgImageRef = [imageContext createCGImage:result fromRect:[result extent]];
+            UIImage *targetImage = [UIImage imageWithCGImage:cgImageRef];
+            [self.imageView setImage:targetImage];
+            break;
+            
+        }
+        case 3:{
+        
+            CIContext *imageContext = [CIContext contextWithOptions:nil];
+            CIImage *image = [[CIImage alloc] initWithImage:inputImage];
+            CIFilter *filter= [CIFilter filterWithName:@"CIColorControls"];
+            [filter setValue:image forKey:@"inputImage"];
+            [filter setValue:[NSNumber numberWithFloat:0] forKey:@"inputSaturation"];
+            [filter setValue:[NSNumber numberWithFloat:1.05] forKey:@"inputContrast"];
+            CIImage *result = [filter valueForKey: @"outputImage"];
+            CGImageRef cgImageRef = [imageContext createCGImage:result fromRect:[result extent]];
+            UIImage *targetImage = [UIImage imageWithCGImage:cgImageRef];
+            [self.imageView setImage:targetImage];
+            
+            break;
+        }
+        case 4:
+        {
+            CIContext *imageContext = [CIContext contextWithOptions:nil];
+            CIImage *image = [[CIImage alloc] initWithImage:inputImage];
+            CIFilter *filter= [CIFilter filterWithName:@"CIPhotoEffectProcess"];
+            [filter setValue:image forKey:@"inputImage"];
+            CIImage *result = [filter valueForKey: @"outputImage"];
+            CGImageRef cgImageRef = [imageContext createCGImage:result fromRect:[result extent]];
+            UIImage *targetImage = [UIImage imageWithCGImage:cgImageRef];
+            [self.imageView setImage:targetImage];
+            break;
+            
+        }
+        case 5:
+        {
+            CIContext *imageContext = [CIContext contextWithOptions:nil];
+            CIImage *image = [[CIImage alloc] initWithImage:inputImage];
+            CIFilter *filter= [CIFilter filterWithName:@"CIPhotoEffectTransfer"];
+            [filter setValue:image forKey:@"inputImage"];
+            CIImage *result = [filter valueForKey: @"outputImage"];
+            CGImageRef cgImageRef = [imageContext createCGImage:result fromRect:[result extent]];
+            UIImage *targetImage = [UIImage imageWithCGImage:cgImageRef];
+            [self.imageView setImage:targetImage];
+            break;
+            
+        }
+        case 6:
+        {
+            CIContext *imageContext = [CIContext contextWithOptions:nil];
+            CIImage *image = [[CIImage alloc] initWithImage:inputImage];
+            CIFilter *filter = [CIFilter filterWithName:@"CIColorMonochrome" keysAndValues: kCIInputImageKey,image,@"inputColor",[CIColor colorWithRed:0.5 green:0.5 blue:1.0],@"inputIntensity", [NSNumber numberWithFloat:0.8], nil];
+            CIImage *result = [filter valueForKey: @"outputImage"];
+            CGImageRef cgImageRef = [imageContext createCGImage:result fromRect:[result extent]];
+            UIImage *targetImage = [UIImage imageWithCGImage:cgImageRef];
+            [self.imageView setImage:targetImage];
+            break;
+            
+        }
+        case 7:
+        {
+            CIContext *imageContext = [CIContext contextWithOptions:nil];
+            CIImage *image = [[CIImage alloc] initWithImage:inputImage];
+            CIFilter *filter = [CIFilter filterWithName:@"CIPhotoEffectNoir" keysAndValues: kCIInputImageKey,image, nil];
+            CIImage *result = [filter valueForKey: @"outputImage"];
+            CGImageRef cgImageRef = [imageContext createCGImage:result fromRect:[result extent]];
+            UIImage *targetImage = [UIImage imageWithCGImage:cgImageRef];
+            [self.imageView setImage:targetImage];
+            break;
+        }
+            
+            
+            
+        default:
+            break;
+    }
 }
 
 @end
