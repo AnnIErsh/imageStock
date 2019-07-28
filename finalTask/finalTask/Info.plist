@@ -48,7 +48,9 @@
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
 	</dict>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>saved!</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
+	<string>using</string>
 </dict>
 </plist>

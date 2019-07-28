@@ -37,7 +37,9 @@
     [self.imageView addGestureRecognizer:panRecognizer];
     
     [self setButton];
+    [self addSaveButton];
 //    [self setFilterView];
+    
 //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesBegan:withEvent:)];
 //    [self.imageView addGestureRecognizer:tap];
     
@@ -164,6 +166,14 @@ CGFloat initialY;
     [self.filtersCollection setBackgroundColor:[UIColor redColor]];
     [self.view addSubview:self.filtersCollection];
     [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+}
+
+-(void)addSaveButton{
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"SAVE" style:UIBarButtonItemStylePlain target:self action:@selector(saving:)];
+    [self.navigationItem setLeftBarButtonItem:item animated:YES];
+}
+- (void)saving:(id)sender {
+    UIImageWriteToSavedPhotosAlbum(self.imageView.image, nil, nil, nil);
 }
 
 @end

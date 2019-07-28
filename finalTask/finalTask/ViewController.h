@@ -16,6 +16,7 @@
 @property (retain, nonatomic) UIImage *image;
 @property (retain, nonatomic) UIScrollView *scrollView;
 @property (retain, nonatomic) UIButton *buttonToGallery;
+@property (retain, nonatomic) UIBarButtonItem *saveButton;
 
 @end
 
