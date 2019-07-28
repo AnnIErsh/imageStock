@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (retain, nonatomic) __block NSDictionary *imageDate;
 @property (retain, nonatomic) UIImageView *imageView;
+@property (retain, nonatomic) UICollectionView *filtersCollection;
 @property (retain, nonatomic) UIImage *image;
 @property (retain, nonatomic) UIScrollView *scrollView;
+@property (retain, nonatomic) UIButton *buttonToGallery;
 
 @end
 
