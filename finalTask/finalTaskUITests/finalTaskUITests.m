@@ -31,6 +31,22 @@
 }
 
 - (void)testExample {
+    [XCUIDevice sharedDevice].orientation = UIDeviceOrientationLandscapeRight;
+    
+    XCUIApplication *app = [[XCUIApplication alloc] init];
+    XCUIElementQuery *collectionViewsQuery = app.collectionViews;
+    XCUIElement *element = [[[collectionViewsQuery childrenMatchingType:XCUIElementTypeCell] elementBoundByIndex:3] childrenMatchingType:XCUIElementTypeOther].element;
+    [element tap];
+    [element tap];
+    [XCUIDevice sharedDevice].orientation = UIDeviceOrientationPortraitUpsideDown;
+    [XCUIDevice sharedDevice].orientation = UIDeviceOrientationLandscapeLeft;
+    [XCUIDevice sharedDevice].orientation = UIDeviceOrientationPortrait;
+    
+    XCUIElement *element2 = [[[collectionViewsQuery childrenMatchingType:XCUIElementTypeCell] elementBoundByIndex:1] childrenMatchingType:XCUIElementTypeOther].element;
+    [element2 tap];
+    [element2 tap];
+    [app.navigationBars[@"View"].buttons[@"SAVE"] tap];
+    
     // Use recording to get started writing UI tests.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
 }

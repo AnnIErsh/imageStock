@@ -10,13 +10,11 @@
 
 @interface ViewController : UIViewController <UIGestureRecognizerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
 
-@property (retain, nonatomic) __block NSDictionary *imageDate;
-@property (retain, nonatomic) UIImageView *imageView;
-@property (retain, nonatomic) UICollectionView *filtersCollection;
-@property (retain, nonatomic) UIImage *image;
-@property (retain, nonatomic) UIScrollView *scrollView;
-@property (retain, nonatomic) UIButton *buttonToGallery;
-@property (retain, nonatomic) UIBarButtonItem *saveButton;
+@property (retain) UIImageView *imageView;
+@property (retain) UICollectionView *filtersCollection;
+@property (retain) UIImage *image;
+@property (retain) UIButton *buttonToGallery;
+@property (retain) UIBarButtonItem *saveButton;
 @property (retain) NSArray *filters;
 
 

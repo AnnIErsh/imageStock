@@ -19,7 +19,7 @@
 @property (retain, nonatomic) __block UIImage *imageToCache;
 @property (retain, nonatomic) __block NSArray *imageH;
 @property (retain, nonatomic) __block NSArray *imageW;
-@property (retain, nonatomic) __block NSMutableArray *imageMutableArray;
+@property (retain, nonatomic) __block NSArray *imageArray;
 @end
 
 

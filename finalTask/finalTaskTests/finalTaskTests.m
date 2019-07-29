@@ -23,9 +23,17 @@
 }
 
 - (void)testExample {
+    //7myf2SlxmCg
+    //2ITPoXIOElU
+    NSString *savedValue = [[NSUserDefaults standardUserDefaults]
+                            stringForKey:@"2ITPoXIOElU"];
+    
+    NSLog(@"%@", savedValue);
+    XCTAssertTrue([@"https://images.unsplash.com/photo-1563130678-065e2e402941?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjgzODc2fQ" isEqualToString:savedValue]);
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
 }
+
 
 - (void)testPerformanceExample {
     // This is an example of a performance test case.

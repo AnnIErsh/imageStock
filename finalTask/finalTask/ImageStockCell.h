@@ -11,9 +11,9 @@
 
 @interface ImageStockCell : UICollectionViewCell
 @property (retain,nonatomic) UIImageView *stockImageView;
-+ (instancetype)sizingCell;
-@property (assign) CGFloat height;
-@property (assign) CGFloat width;
+@property (retain) __block NSString *idImage;
+@property (retain) __block NSString *altDescription;
+@property (retain) __block NSString *urBigImage;
 @end
 
 

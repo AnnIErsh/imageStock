@@ -49,7 +49,7 @@
 		<true/>
 	</dict>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>saved!</string>
+	<string>saving...</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>using</string>
 </dict>

@@ -21,15 +21,16 @@
     [self setAutorezingMask];
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout new] autorelease];
-    self.imageStockView = [[UICollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:layout];
+    layout.minimumInteritemSpacing = 0;
+    layout.minimumLineSpacing = 0;
+    self.imageStockView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
     [self.imageStockView setDataSource:self];
     [self.imageStockView setDelegate:self];
     [self.imageStockView registerClass:[ImageStockCell class] forCellWithReuseIdentifier:@"CellStock"];
-    [self.imageStockView setBackgroundColor:[UIColor grayColor]];
+    [self.imageStockView setBackgroundColor:[UIColor lightGrayColor]];
     [self.view addSubview:self.imageStockView];
-    self.infNumber = (arc4random() % 40) + 10;
-    [self getJson];
-    
+    self.infNumber = (arc4random_uniform(20) + 10) * 2;
+    self.navigationController.navigationBar.hidden = YES;
 }
 
 
@@ -52,32 +53,24 @@
 }
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    if(self.view.frame.size.height < self.view.frame.size.width){
+        return CGSizeMake(self.view.bounds.size.height / 2, self.view.bounds.size.height / 2);
+    }
     
-    return CGSizeMake(200, 200);
+    return CGSizeMake(self.view.bounds.size.width / 2, self.view.bounds.size.width / 2);
+    
 }
 
-    
-    
--(void)configureCell: (CGSize)size atIndexPath:(NSIndexPath*)path {
-    
-}
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     ImageStockCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CellStock" forIndexPath:indexPath];
     cell.backgroundView = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"placeholder"]];
+    cell.backgroundView.layer.opacity = 0.5;
+    cell.backgroundView.contentMode = UIViewContentModeScaleAspectFill;
     NSString *sValue = [@(self.infNumber) stringValue];
     cell.tag = indexPath.item;
-   // [self fetchRequest:cell forOndexPath:indexPath withPage:sValue];
-//
-//    NSArray *arr = [self.imageDate valueForKey:@"small"];
-//    NSString *str = [arr objectAtIndex:indexPath.item];
     [self fetchRequest:cell forOndexPath:indexPath withPage:sValue];
-    
-
- //   [cell.stockImageView setNeedsLayout];
-   // [self loadImagesInItems:cell withString:str atIndexPath:indexPath];
-   // NSLog(@"%lu", (unsigned long)self.imageDate.count);
     return cell;
 }
 
@@ -114,17 +107,19 @@
         {
             NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
             self.imageDate = [dict valueForKey:@"urls"];
-            [self.mutableImageDate addEntriesFromDictionary:dict];
-            NSLog(@"%lu", (unsigned long)dict.count);
             NSArray *arr = [self.imageDate valueForKey:@"small"];
-            self.imageH = [dict valueForKey:@"height"];
-            self.imageW = [dict valueForKey:@"width"];
             NSString *str = [arr objectAtIndex:path.item];
-
             
-            //            NSString *strH = [self.imageH objectAtIndex:path.item];
-//            NSString *strW = [self.imageW objectAtIndex:path.item];
-  //          self.infNumber = self.infNumber + 1;
+            
+            NSArray *arrId = [dict valueForKey:@"id"];
+            cell.idImage = [arrId objectAtIndex:path.item];
+            
+            NSArray *arrAltDescription = [dict valueForKey:@"alt_description"];
+            cell.altDescription = [arrAltDescription objectAtIndex:path.item];
+            
+            
+            NSArray *arrBigImage = [self.imageDate valueForKey:@"full"];
+            cell.urBigImage = [arrBigImage objectAtIndex:path.item];
             [self loadImagesInItems:cell withString:str atIndexPath:path];
             
            
@@ -137,116 +132,56 @@
     
 }
 
-//-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-//   // [self.imageStockView reloadData];
-//    self.infNumber = self.infNumber + 1;
-//
-//}
-
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
-    NSLog(@"ended");
+  //  NSLog(@"ended");
     //self.infNumber = self.infNumber + 1
-    [self.imageStockView reloadData];
-     self.infNumber = self.infNumber + 6;
+     [self.imageStockView reloadData];
+     self.infNumber = self.infNumber + 30;
 }
 
 -(void)loadImagesInItems:(ImageStockCell*)cell withString:(NSString*)str atIndexPath:(NSIndexPath*)path{
-    dispatch_async(dispatch_get_global_queue(0,0), ^{
-        NSData *dat = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: str]];
-        NSString *strH = [self.imageH objectAtIndex:path.item];
-        NSString *strW = [self.imageW objectAtIndex:path.item];
-        if (!dat){
-            NSLog(@"Loading...");
-            return;
-        }
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
+    dispatch_async(queue, ^{
+        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:
+                                                 [NSURL URLWithString:str]]];
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (cell.tag == path.item){
-                cell.width = [strW intValue];
-                cell.height = [strH intValue];
-                //                CGSize size = cell.stockImageView.frame.size;
-                //               NSLog(@"size %f: ", cell.height / 3);
-                cell.stockImageView.image = [UIImage imageWithData: dat];
-                UIImageView *opacityView = [[UIImageView alloc] initWithImage:[UIImage imageWithData: dat]];
-                opacityView.layer.opacity = 0.4;
-                cell.backgroundView = opacityView;
-                //self.infNumber = self.infNumber + 4;
-                [cell.stockImageView setUserInteractionEnabled: YES];
-//                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickOnImage: withImage:)];
-//                [tap setDelegate: self];
-//                [cell.stockImageView addGestureRecognizer:tap];
-//                [cell.stockImageView setNeedsLayout];
+            
+            if(image!= nil){
+               // if (cell.tag == path.item){
+                    [cell.stockImageView setImage:image];
+               // }
+            }else{
                 
+                [cell.stockImageView setImage:[UIImage imageNamed:@"placeholder"]];
                 
             }
+            
+            [cell setNeedsLayout];
+            [cell.stockImageView setUserInteractionEnabled: YES];
+            
+            
         });
-        
     });
 }
--(void)getJson{
-    NSString *client_id = @"b132b205e5222fb070766e967d5ce4a97019704f212a35b7db5c249131967858";
-    //@"b3b44601b00c840945f3c415f24e043ee5149121d2de04e4b47cb290b3401b2c";
-    //b132b205e5222fb070766e967d5ce4a97019704f212a35b7db5c249131967858
-    
-    NSURLComponents *componets = [NSURLComponents new];
-    componets.scheme = @"https";
-    componets.host = @"api.unsplash.com";
-    componets.path = @"/photos/random";
-    componets.queryItems = @[
-                             [NSURLQueryItem queryItemWithName:@"client_id" value: client_id],
-                             //[NSURLQueryItem queryItemWithName:@"page" value: [@(10) stringValue]],
-                             //[NSURLQueryItem queryItemWithName:@"per_page" value: [@(10) stringValue]]
-                             [NSURLQueryItem queryItemWithName:@"count" value: @"30"]
-                             ];
-    // self.infNumber = self.infNumber + 1;
-    NSURL *url = componets.URL;
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL: url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-    NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        
-        if (error)
-        {
-            NSLog(@"Error : %@\n", error);
-            return;
-        }
-        
-        if (data != nil)
-        {
-            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
-            self.imageDate = [dict valueForKey:@"urls"];
-            //[self.mutableImageDate addEntriesFromDictionary:dict];
-            //  NSLog(@"%lu", (unsigned long)dict.count);
-            //NSArray *arr = [self.imageDate valueForKey:@"small"];
-            self.imageH = [dict valueForKey:@"height"];
-            self.imageW = [dict valueForKey:@"width"];
-            
-            
-            //            NSString *strH = [self.imageH objectAtIndex:path.item];
-            //            NSString *strW = [self.imageW objectAtIndex:path.item];
-            // self.infNumber = self.infNumber + 1;
-        }
-    }];
-    [task resume];
-    [componets autorelease];
-    
-}
-
-//- (void)clickOnImage:(UITapGestureRecognizer*)recognizer withImage:(UIImage*)image{
-//
-//    ViewController *detailsVC = [ViewController new];
-//    NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:recognizer.view.tag];
-//    ImageStockCell *cell = (ImageStockCell*)[self.imageStockView cellForItemAtIndexPath: indexPath];
-//    image = cell.stockImageView.image;
-//    detailsVC.image = image;
-//   // NSLog(@"%@ image to sent....", detailsVC.detailsImage);
-//    [self.navigationController pushViewController:detailsVC animated:NO];
-//
-//}
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     ViewController *detailsVC = [[ViewController new] autorelease];
     ImageStockCell *cell = (ImageStockCell*)[self.imageStockView cellForItemAtIndexPath: indexPath];
     detailsVC.image = cell.stockImageView.image;
+    
     [self.navigationController pushViewController:detailsVC animated:NO];
+    
+    NSString *ID = cell.idImage;
+    NSString *url = cell.urBigImage;
+    if(!cell.altDescription) {
+        cell.altDescription = @"No description";
+    }
+    NSLog(@"id: %@  url: %@", ID, url);
+    [[NSUserDefaults standardUserDefaults] setObject:url forKey:ID];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
 }
+
+
+
 @end

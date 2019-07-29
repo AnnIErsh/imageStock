@@ -8,8 +8,7 @@
 
 #import "ViewController.h"
 #import "FilterCollectionViewCell.h"
-#import "UIImage+Filters.h"
-#import "CIImage+Filters.h"
+
 
 @interface ViewController ()
 @end
@@ -18,8 +17,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.navigationBar.hidden = NO;
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.view.layer.borderWidth = 10;
+    //  self.view.layer.borderWidth = 10;
     self.imageView  = [[UIImageView alloc] initWithFrame:self.view.bounds];
     if (self.image.size.width > self.view.bounds.size.width || self.image.size.height > self.view.bounds.size.height) {
         self.imageView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
@@ -28,26 +28,50 @@
     else {
         self.imageView.image = self.image;
     }
+    
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view reloadInputViews];
     [self.view addSubview:self.imageView];
     self.imageView.userInteractionEnabled = YES;
     UIPanGestureRecognizer* panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moving:)];
+    
     [panRecognizer setMinimumNumberOfTouches:1];
     [panRecognizer setMaximumNumberOfTouches:1];
     [panRecognizer setDelegate: self];
     [self.imageView addGestureRecognizer:panRecognizer];
     
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc]
+                                       initWithTarget:self action:@selector(pinchGestureDetected:)];
+    pinch.delegate = self;
+    [self.imageView addGestureRecognizer:pinch];
+    
     [self setButton];
     [self addSaveButton];
     [self setFilterView];
+    [self setAutoresizing];
     self.filtersCollection.hidden = YES;
-//    [self setFilterView];
     
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchesBegan:withEvent:)];
-//    [self.imageView addGestureRecognizer:tap];
+}
+-(void)viewWillLayoutSubviews{
+    [super viewWillLayoutSubviews];
+    [self reloadInputViews];
+    [self setAutoresizing];
     
+}
 
+-(void)setAutoresizing{
+    [self.buttonToGallery setFrame:CGRectMake(5*self.view.bounds.size.width/12, self.view.bounds.size.height - self.view.bounds.size.width/6, self.view.bounds.size.width/6, self.view.bounds.size.width/6)];
+    self.buttonToGallery.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
+    
+    if (self.image.size.width > self.view.bounds.size.width || self.image.size.height > self.view.bounds.size.height) {
+        [self.imageView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    } else {
+        self.imageView.center = self.view.superview.center;
+    }
+    
+    //self.imageView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+    [self.filtersCollection setFrame: CGRectMake(0, self.view.bounds.size.height - 205, self.view.bounds.size.width, 200)];
+    self.filtersCollection.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
@@ -56,49 +80,40 @@
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
 }
+
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     FilterCollectionViewCell *cell = [self.filtersCollection dequeueReusableCellWithReuseIdentifier:@"FilterCell" forIndexPath:indexPath];
-    //cell.backgroundColor = UIColor.greenColor;
-   // cell.filterImage = self.image;
-    //cell.filterImageView.image = self.image;
+    
     //cell.filterImage = self.image;
-   // [cell.filterImageView setImage:self.image];
-    //cell.filterImageView.layer.borderWidth = 2;
-    //cell.filterImageView.layer.borderWidth = 2;
+    // UIImage *imageCell = [self imageWithFilter: self.image forIndex:indexPath.item];
     cell.backgroundView = [[UIImageView alloc] initWithImage: self.image];
+    cell.backgroundView.layer.opacity = 0.7;
+    cell.backgroundColor = [self setColor:(int)indexPath.item];
+    cell.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
+    
     return cell;
     
 }
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    return CGSizeMake(80, 80);
+    if(self.view.frame.size.height < self.view.frame.size.width){
+        [self.buttonToGallery setFrame:CGRectMake(self.view.bounds.size.width/2 - self.view.bounds.size.height/12, self.view.bounds.size.height - self.view.bounds.size.height/6, self.view.bounds.size.height/6, self.view.bounds.size.height/6)];
+        [self.view reloadInputViews];
+        
+        return CGSizeMake(self.view.bounds.size.height / 4, self.view.bounds.size.height / 4);
+        
+    }
+    
+    return CGSizeMake(self.view.bounds.size.width / 4, self.view.bounds.size.width / 4);
 }
 
--(void)viewWillLayoutSubviews{
-    [super viewWillLayoutSubviews];
-   // [self.view reloadInputViews];
-    [self reloadInputViews];
-//    [self.view setNeedsDisplay];
-//  //  [self.view setNeedsLayout];
-//    self.imageView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
-//    self.imageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleLeftMargin;
-//    [self.buttonToGallery setFrame:CGRectMake(self.view.frame.size.width/2 - 100, self.view.frame.size.height - 150, 200, 100)];
-//    self.buttonToGallery.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin |UIViewAutoresizingFlexibleLeftMargin;
-//    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout new] autorelease];
- 
-   // [self setButton];
-    
-}
-//-(void)viewDidLayoutSubviews{
-//    [super viewDidLayoutSubviews];
-//}
 
 CGFloat initialX;
 CGFloat initialY;
 
 -(void)moving:(id)sender {
-    [self.view bringSubviewToFront:[(UIPanGestureRecognizer*)sender view]];
-    CGPoint toPoint = [(UIPanGestureRecognizer*)sender translationInView:self.view];
+    [self.imageView bringSubviewToFront:[(UIPanGestureRecognizer*)sender view]];
+    CGPoint toPoint = [(UIPanGestureRecognizer*)sender translationInView:self.imageView];
     if([(UIPanGestureRecognizer*)sender state] == UIGestureRecognizerStateBegan) {
         initialX = [[sender view] center].x;
         initialY = [[sender view] center].y;
@@ -117,22 +132,32 @@ CGFloat initialY;
     if ([touch.view isEqual: self.imageView]) {
         self.filtersCollection.hidden = YES;
         self.buttonToGallery.hidden = NO;
-    } else {
-    
+        NSString *savedValue = [[NSUserDefaults standardUserDefaults]
+                                stringForKey:@"2TbuT26y3dc"];
+        NSLog(@"cheking: saved url %@", savedValue);
     }
-
+    
+}
+- (void)pinchGestureDetected:(UIPinchGestureRecognizer *)recognizer
+{
+    UIGestureRecognizerState state = [recognizer state];
+    if (state == UIGestureRecognizerStateBegan || state == UIGestureRecognizerStateChanged)
+    {
+        CGFloat scale = [recognizer scale];
+        [recognizer.view setTransform:CGAffineTransformScale(recognizer.view.transform, scale, scale)];
+        [recognizer setScale:1.0];
+    }
+    
 }
 
 
 
--(UIImage*)imageWithImage: (UIImage*) sourceImage scaledToWidth: (float) i_width
+-(UIImage*)imageWithImage:(UIImage*)sourceImage scaledToWidth:(float)width
 {
     float oldWidth = sourceImage.size.width;
-    float scaleFactor = i_width / oldWidth;
-    
+    float scaleFactor = width / oldWidth;
     float newHeight = sourceImage.size.height * scaleFactor;
     float newWidth = oldWidth * scaleFactor;
-    
     UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight));
     [sourceImage drawInRect:CGRectMake(0, 0, newWidth, newHeight)];
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
@@ -144,61 +169,61 @@ CGFloat initialY;
 
 -(void)setButton{
     self.buttonToGallery = [UIButton buttonWithType: UIButtonTypeCustom];
-    [self.buttonToGallery setFrame:CGRectMake(self.view.frame.size.width/2 - 100, self.view.frame.size.height - 150, 200, 100)];
-    self.buttonToGallery.titleLabel.font = [UIFont systemFontOfSize: 20];
-    self.buttonToGallery.backgroundColor = UIColor.darkGrayColor;
-    [self.view.viewForLastBaselineLayout addSubview:self.buttonToGallery];
-    [self.buttonToGallery setTitle:@"Open Me" forState:UIControlStateNormal];
-  //  [self.buttonToGallery setTitle:@"I'm closed!" forState:UIControlStateSelected];
-    self.buttonToGallery.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin |UIViewAutoresizingFlexibleLeftMargin;
-    
+    [self.buttonToGallery setFrame:CGRectMake(5*self.view.bounds.size.width/12, self.view.bounds.size.height - self.view.bounds.size.width/6, self.view.bounds.size.width/6, self.view.bounds.size.width/6)];
+    self.buttonToGallery.titleLabel.font = [UIFont systemFontOfSize: 16];
+    self.buttonToGallery.backgroundColor = UIColor.lightGrayColor;
+    self.buttonToGallery.layer.opacity = 0.7;
+    self.buttonToGallery.layer.cornerRadius = 20;
+    [self.view addSubview:self.buttonToGallery];
+    [self.buttonToGallery setTitle:@"open" forState:UIControlStateNormal];
     [self.buttonToGallery addTarget:self action:@selector(setButtonPress:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:self.buttonToGallery];
 }
 
 -(void)setButtonPress:(UIButton*)sender {
-   // [self setFilterView];
+    // [self setFilterView];
     if (sender.selected == YES) {
-       // [self setFilterView];
+        // [self setFilterView];
         self.filtersCollection.hidden = NO;
         self.buttonToGallery.hidden = YES;
         sender.selected = NO;
     }else{
         sender.selected = YES;
-    
+        
     }
-//    UIImagePickerController *picker = [[UIImagePickerController new] autorelease];
-//    picker.delegate = self;
-//    [picker setSourceType: UIImagePickerControllerSourceTypePhotoLibrary];
-//    [self presentViewController: picker animated:YES completion:nil];
-
+    //    UIImagePickerController *picker = [[UIImagePickerController new] autorelease];
+    //    picker.delegate = self;
+    //    [picker setSourceType: UIImagePickerControllerSourceTypePhotoLibrary];
+    //    [self presentViewController: picker animated:YES completion:nil];
+    
 }
 
 -(void)setFilterView{
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout new] autorelease];
-    self.filtersCollection = [[UICollectionView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 110, self.view.frame.size.width, 100) collectionViewLayout:layout];
-    //CGRectMake(0, self.view.frame.size.height - 50, self.view.frame.size.width, 100) collectionViewLayout:layout];
+    self.filtersCollection = [[UICollectionView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 205, self.view.bounds.size.width, 200) collectionViewLayout:layout];
     [self.filtersCollection registerClass:[FilterCollectionViewCell class] forCellWithReuseIdentifier:@"FilterCell"];
     self.filtersCollection.delegate = self;
     self.filtersCollection.dataSource = self;
-    self.filtersCollection.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
-    [self.filtersCollection setBackgroundColor:[UIColor redColor]];
+    [self.filtersCollection setBackgroundColor:[UIColor lightTextColor]];
     [self.view addSubview:self.filtersCollection];
     [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
 }
 
 -(void)addSaveButton{
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"SAVE" style:UIBarButtonItemStylePlain target:self action:@selector(saving:)];
-    [self.navigationItem setLeftBarButtonItem:item animated:YES];
+    [self.navigationItem setRightBarButtonItem:item animated:YES];
 }
 - (void)saving:(id)sender {
     UIImageWriteToSavedPhotosAlbum(self.imageView.image, nil, nil, nil);
 }
 
+
+
+
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     [self imageWithFilter:self.image forIndex:indexPath.item];
 }
--(void)imageWithFilter: (UIImage*)inputImage forIndex:(long)index {
+-(UIImage*)imageWithFilter:(UIImage*)inputImage forIndex:(long)index {
     switch (index) {
         case 0: {
             CIContext *imageContext = [CIContext contextWithOptions:nil];
@@ -210,14 +235,13 @@ CGFloat initialY;
             CGImageRef cgImageRef = [imageContext createCGImage:result fromRect:[result extent]];
             UIImage *targetImage = [UIImage imageWithCGImage:cgImageRef];
             [self.imageView setImage:targetImage];
-            break;
+            return targetImage;
         }
         case 1:
         {
             
             CIContext *imageContext = [CIContext contextWithOptions:nil];
             CIImage *image = [[CIImage alloc] initWithImage:inputImage];
-            
             CIFilter *vignette = [CIFilter filterWithName:@"CIVignette"];
             [vignette setDefaults];
             [vignette setValue: image forKey: @"inputImage"];
@@ -227,8 +251,7 @@ CGFloat initialY;
             CGImageRef cgImageRef = [imageContext createCGImage:result fromRect:[result extent]];
             UIImage *targetImage = [UIImage imageWithCGImage:cgImageRef];
             [self.imageView setImage:targetImage];
-            
-            break;
+            return targetImage;
             
         }
         case 2:
@@ -242,11 +265,11 @@ CGFloat initialY;
             CGImageRef cgImageRef = [imageContext createCGImage:result fromRect:[result extent]];
             UIImage *targetImage = [UIImage imageWithCGImage:cgImageRef];
             [self.imageView setImage:targetImage];
-            break;
+            return targetImage;
             
         }
         case 3:{
-        
+            
             CIContext *imageContext = [CIContext contextWithOptions:nil];
             CIImage *image = [[CIImage alloc] initWithImage:inputImage];
             CIFilter *filter= [CIFilter filterWithName:@"CIColorControls"];
@@ -257,8 +280,7 @@ CGFloat initialY;
             CGImageRef cgImageRef = [imageContext createCGImage:result fromRect:[result extent]];
             UIImage *targetImage = [UIImage imageWithCGImage:cgImageRef];
             [self.imageView setImage:targetImage];
-            
-            break;
+            return targetImage;
         }
         case 4:
         {
@@ -270,7 +292,7 @@ CGFloat initialY;
             CGImageRef cgImageRef = [imageContext createCGImage:result fromRect:[result extent]];
             UIImage *targetImage = [UIImage imageWithCGImage:cgImageRef];
             [self.imageView setImage:targetImage];
-            break;
+            return targetImage;
             
         }
         case 5:
@@ -283,7 +305,7 @@ CGFloat initialY;
             CGImageRef cgImageRef = [imageContext createCGImage:result fromRect:[result extent]];
             UIImage *targetImage = [UIImage imageWithCGImage:cgImageRef];
             [self.imageView setImage:targetImage];
-            break;
+            return targetImage;
             
         }
         case 6:
@@ -295,7 +317,7 @@ CGFloat initialY;
             CGImageRef cgImageRef = [imageContext createCGImage:result fromRect:[result extent]];
             UIImage *targetImage = [UIImage imageWithCGImage:cgImageRef];
             [self.imageView setImage:targetImage];
-            break;
+            return targetImage;
             
         }
         case 7:
@@ -307,7 +329,7 @@ CGFloat initialY;
             CGImageRef cgImageRef = [imageContext createCGImage:result fromRect:[result extent]];
             UIImage *targetImage = [UIImage imageWithCGImage:cgImageRef];
             [self.imageView setImage:targetImage];
-            break;
+            return targetImage;
         }
             
             
@@ -315,6 +337,26 @@ CGFloat initialY;
         default:
             break;
     }
+    return self.image;
+}
+
+-(UIColor*)setColor:(int)index{
+    UIColor *color = [[UIColor new]autorelease];
+    switch (index) {
+        case 0:color = [UIColor colorWithRed:112/255.0 green:66/255.0 blue:20/255.0 alpha:1];break;
+        case 1:color = [UIColor colorWithRed:62/255.0 green:48/255.0 blue:48/255.0 alpha:1.0];break;
+        case 2:color = [UIColor colorWithRed:161/255.0 green:164/255.0 blue:167/255.0 alpha:1.0];break;
+        case 3:color = [UIColor colorWithRed:28/255.0 green:28/255.0 blue:28/255.0 alpha:1.0];break;
+        case 4:color = [UIColor colorWithRed:183/255.0 green:222/255.0 blue:210/255.0 alpha:1.0];break;
+        case 5:color = [UIColor colorWithRed:255/255.0 green:236/255.0 blue:184/255.0 alpha:1.0];break;
+        case 6:color = [UIColor colorWithRed:150/255.0 green:164/255.0 blue:214/255.0 alpha:1.0];break;
+        case 7:color = [UIColor colorWithRed:27/255.0 green:27/255.0 blue:27/255.0 alpha:1.0];break;
+        default:
+            break;
+    }
+    
+    
+    return color;
 }
 
 @end

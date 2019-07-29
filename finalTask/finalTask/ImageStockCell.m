@@ -10,20 +10,14 @@
 
 @implementation ImageStockCell
 
-+ (instancetype)sizingCell {
-    static id sizingCell = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sizingCell = [self new];
-    });
-    return sizingCell;
-}
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        //self.height;
-        //self.width;
+
+        self.idImage = [[NSString new] autorelease];
+        self.altDescription = [[NSString new] autorelease];
+        
         self.stockImageView = [[UIImageView new]autorelease];
         self.stockImageView.frame = CGRectMake(self.viewForLastBaselineLayout.frame.size.width / 2 - 90, self.viewForLastBaselineLayout.frame.size.height / 2 - 90, 180, 180);
         [self.viewForLastBaselineLayout addSubview:self.stockImageView];
@@ -35,5 +29,16 @@
     return self;
 }
 
+-(id)init{
+    self = [super init];
+    if (self) {
+        
+        self.urBigImage = [[NSString new] autorelease];
+        self.idImage = [[NSString new] autorelease];
+        self.altDescription = [[NSString new] autorelease];
+        
+    }
+    return self;
+}
 
 @end
