@@ -76,7 +76,7 @@
 
 
 - (void)fetchRequest: (ImageStockCell *)cell forOndexPath: (NSIndexPath*)path withPage:(NSString*)page{
-    NSString *client_id = @"d3f9b52149691b5f1335fbfe5d419778aa9bd0619d34a6b805d4db7f71f079f3";
+    NSString *client_id = @"b3b44601b00c840945f3c415f24e043ee5149121d2de04e4b47cb290b3401b2c";
     //@"b3b44601b00c840945f3c415f24e043ee5149121d2de04e4b47cb290b3401b2c";
     //b132b205e5222fb070766e967d5ce4a97019704f212a35b7db5c249131967858
 
@@ -144,12 +144,12 @@
     dispatch_async(queue, ^{
         UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:
                                                  [NSURL URLWithString:str]]];
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_sync(dispatch_get_main_queue(), ^{
             
             if(image!= nil){
-               // if (cell.tag == path.item){
+                if (cell.tag == path.item){
                     [cell.stockImageView setImage:image];
-               // }
+                }
             }else{
                 
                 [cell.stockImageView setImage:[UIImage imageNamed:@"placeholder"]];
@@ -177,6 +177,7 @@
         cell.altDescription = @"No description";
     }
     NSLog(@"id: %@  url: %@", ID, url);
+    
     [[NSUserDefaults standardUserDefaults] setObject:url forKey:ID];
     [[NSUserDefaults standardUserDefaults] synchronize];
     

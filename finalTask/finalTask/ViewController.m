@@ -132,9 +132,9 @@ CGFloat initialY;
     if ([touch.view isEqual: self.imageView]) {
         self.filtersCollection.hidden = YES;
         self.buttonToGallery.hidden = NO;
-        NSString *savedValue = [[NSUserDefaults standardUserDefaults]
-                                stringForKey:@"2TbuT26y3dc"];
-        NSLog(@"cheking: saved url %@", savedValue);
+//        NSString *savedValue = [[NSUserDefaults standardUserDefaults]
+//                                stringForKey:@"2TbuT26y3dc"];
+//        NSLog(@"cheking: saved url %@", savedValue);
     }
     
 }

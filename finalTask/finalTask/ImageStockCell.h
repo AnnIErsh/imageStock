@@ -11,9 +11,9 @@
 
 @interface ImageStockCell : UICollectionViewCell
 @property (retain,nonatomic) UIImageView *stockImageView;
-@property (retain) __block NSString *idImage;
-@property (retain) __block NSString *altDescription;
-@property (retain) __block NSString *urBigImage;
+@property (retain,nonatomic) __block NSString *idImage;
+@property (retain,nonatomic) __block NSString *altDescription;
+@property (retain,nonatomic) __block NSString *urBigImage;
 @end
 
 
